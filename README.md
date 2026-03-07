@@ -22,6 +22,14 @@ This is an engineering approach to AI: no "AutoGPT-style" hallucinations, no inf
 
 ---
 
+## Architecture
+
+Full system design is described in the document:
+
+→ [System Requirements Specification](docs/SRS_Project_Genesis.md)
+
+---
+
 ## 🏗 The 7 Architectural Layers
 
 The core is strictly divided into 7 abstract layers. Tools may change, but the abstractions remain.
