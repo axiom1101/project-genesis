@@ -1,0 +1,5 @@
+system:
+  max_retries: 3
+  timeout_seconds: 30
+  default_llm: "gpt-4-turbo"
+  embedding_model: "text-embedding-ada-002"

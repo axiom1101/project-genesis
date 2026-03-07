@@ -1,0 +1,8 @@
+scenario: "VR Club Management"
+business_rules:
+  - "If PC downtime > 15%, flag as anomaly."
+  - "If admin shift revenue drops by 20% compared to average, trigger alert."
+metrics_to_track:
+  - "occupancy_rate"
+  - "average_check"
+  - "admin_performance"

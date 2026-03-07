@@ -1,0 +1,6 @@
+"""
+SQLAlchemy ORM Models.
+Defines the schema for Persistent Facts and Event Logs.
+"""
+# class Fact(Base): ...
+# class EventLog(Base): ...

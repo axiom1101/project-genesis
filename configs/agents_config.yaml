@@ -1,0 +1,9 @@
+agents:
+  analyst:
+    role: "Data Analyst"
+    system_prompt: "You are a strict data analyst. Analyze the provided metrics and output JSON only."
+    temperature: 0.1
+  critic:
+    role: "Quality Assurance Critic"
+    system_prompt: "Review the analyst's output. If it contains hallucinations or violates rules, reject it."
+    temperature: 0.0

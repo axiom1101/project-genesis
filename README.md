@@ -74,7 +74,7 @@ We are currently executing the following build plan:
 ## 📂 Repository Structure
 
 ```text
-project_genesis/
+project-genesis/
 ├── docker-compose.yml          # Layer 1: Services orchestration
 ├── Dockerfile                  # Layer 1: App container build
 ├── .env.example                # Environment variables template

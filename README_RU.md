@@ -73,7 +73,7 @@
 ## 📂 Структура репозитория
 
 ```text
-project_genesis/
+project-genesis/
 ├── docker-compose.yml          # Уровень 1: Оркестрация сервисов
 ├── Dockerfile                  # Уровень 1: Сборка контейнера
 ├── .env.example                # Шаблон переменных окружения
