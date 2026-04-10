@@ -1,4 +1,3 @@
-Тестовый коммит из Cursor.
 # Project Genesis: Универсальное AI-ядро
 
 *Read this in other languages: [English](README.md), [Русский](README_RU.md).*
