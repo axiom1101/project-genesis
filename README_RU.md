@@ -1,5 +1,5 @@
 # Project Genesis: Универсальное AI-ядро
-
+asdasd
 *Read this in other languages: [English](README.md), [Русский](README_RU.md).*
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
