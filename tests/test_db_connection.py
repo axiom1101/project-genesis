@@ -1,30 +1,28 @@
-import os
-import psycopg2
-from qdrant_client import QdrantClient
-from dotenv import load_dotenv
+from pathlib import Path
+import sys
 
-# Загружаем переменные из файла .env
-load_dotenv()
+from qdrant_client import QdrantClient
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+
+from src.storage.db import PostgresManager
 
 def test_postgres():
     print("Проверка подключения к PostgreSQL...")
+    db_manager = PostgresManager()
+
     try:
-        # Подключаемся к базе (пока скрипт запущен локально, стучимся на localhost)
-        conn = psycopg2.connect(
-            host="localhost",
-            port="5432",
-            user=os.getenv("POSTGRES_USER"),
-            password=os.getenv("POSTGRES_PASSWORD"),
-            dbname=os.getenv("POSTGRES_DB")
-        )
-        cursor = conn.cursor()
-        cursor.execute("SELECT version();")
-        db_version = cursor.fetchone()
-        print(f"✅ Успех! Версия БД: {db_version[0]}\n")
-        cursor.close()
-        conn.close()
+        result = db_manager.fetch_query("SELECT version();")
+        if result:
+            print(f"✅ Успех! Версия БД: {result[0][0]}\n")
+        else:
+            print("❌ Не удалось получить версию БД.\n")
     except Exception as e:
         print(f"❌ Ошибка подключения к Postgres: {e}\n")
+    finally:
+        db_manager.close()
 
 def test_qdrant():
     print("Проверка подключения к Qdrant...")
