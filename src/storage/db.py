@@ -28,6 +28,9 @@ class PostgresManager:
         except Exception as error:
             print(f"[PostgresManager.__init__] Connection error: {error}")
 
+        # Ensure database schema exists on every connection.
+        self.init_tables()
+
     def execute_query(self, query: str, params: tuple[Any, ...] | None = None) -> None:
         """Execute INSERT/UPDATE/DELETE query and commit transaction."""
         if self.conn is None or self.cursor is None:
@@ -67,3 +70,27 @@ class PostgresManager:
                 self.conn = None
         except Exception as error:
             print(f"[PostgresManager.close] Close error: {error}")
+
+    def init_tables(self) -> None:
+        """Create required tables if they do not exist."""
+        users_table_sql = """
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            telegram_id BIGINT UNIQUE NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        """
+
+        chat_history_table_sql = """
+        CREATE TABLE IF NOT EXISTS chat_history (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES users(id),
+            role VARCHAR(50) NOT NULL,
+            content TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        """
+
+        # Use the existing error handling + transaction logic from execute_query().
+        self.execute_query(users_table_sql)
+        self.execute_query(chat_history_table_sql)

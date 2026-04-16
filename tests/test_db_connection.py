@@ -8,6 +8,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 from src.storage.db import PostgresManager
+from src.memory.vector_store import QdrantManager
 
 def test_postgres():
     print("Проверка подключения к PostgreSQL...")
@@ -27,11 +28,10 @@ def test_postgres():
 def test_qdrant():
     print("Проверка подключения к Qdrant...")
     try:
-        client = QdrantClient(url="http://localhost:6333")
-        collections = client.get_collections()
-        print(f"✅ Успех! Qdrant доступен. Коллекции: {collections.collections}\n")
+        qdrant_manager = QdrantManager()
+        print("✅ Успех! QdrantManager инициализирован и коллекция проверена/создана.\n")
     except Exception as e:
-        print(f"❌ Ошибка подключения к Qdrant: {e}\n")
+        print(f"❌ Ошибка Qdrant: {e}\n")
 
 if __name__ == "__main__":
     print("=== СТАРТ ПРОВЕРКИ ИНФРАСТРУКТУРЫ ===\n")
