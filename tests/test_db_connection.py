@@ -20,6 +20,24 @@ def test_postgres():
             print(f"✅ Успех! Версия БД: {result[0][0]}\n")
         else:
             print("❌ Не удалось получить версию БД.\n")
+
+        # --- ТЕСТ CRUD ОПЕРАЦИЙ ---
+        print("Тестируем CRUD операции...")
+        
+        # 1. Создаем юзера (или получаем существующего)
+        test_tg_id = 999888777
+        user_id = db_manager.add_user(test_tg_id)
+        print(f"👤 Юзер готов! Внутренний ID: {user_id}")
+        
+        # 2. Пишем историю диалога
+        db_manager.add_chat_message(user_id, "user", "Привет, ты кто?")
+        db_manager.add_chat_message(user_id, "assistant", "Я ИИ-агент проекта Genesis.")
+        print("💬 Сообщения записаны в базу.")
+        
+        # 3. Читаем историю так, как её будет читать LLM
+        history = db_manager.get_chat_history(user_id, limit=5)
+        print(f"📜 История диалога: {history}\n")
+
     except Exception as e:
         print(f"❌ Ошибка подключения к Postgres: {e}\n")
     finally:

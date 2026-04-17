@@ -59,6 +59,45 @@ class PostgresManager:
             print(f"[PostgresManager.fetch_query] Query fetch error: {error}")
             return []
 
+    def add_user(self, telegram_id: int) -> int | None:
+        """Create user by telegram_id and return internal user id."""
+        insert_sql = """
+        INSERT INTO users (telegram_id)
+        VALUES (%s)
+        ON CONFLICT (telegram_id) DO NOTHING
+        RETURNING id;
+        """
+        inserted_rows = self.fetch_query(insert_sql, (telegram_id,))
+        if inserted_rows:
+            return inserted_rows[0][0]
+
+        select_sql = "SELECT id FROM users WHERE telegram_id = %s;"
+        existing_rows = self.fetch_query(select_sql, (telegram_id,))
+        if existing_rows:
+            return existing_rows[0][0]
+
+        return None
+
+    def add_chat_message(self, user_id: int, role: str, content: str) -> None:
+        """Save one chat message for a specific user."""
+        query = """
+        INSERT INTO chat_history (user_id, role, content)
+        VALUES (%s, %s, %s);
+        """
+        self.execute_query(query, (user_id, role, content))
+
+    def get_chat_history(self, user_id: int, limit: int = 10) -> list[dict[str, str]]:
+        """Return chat history as LLM-friendly list of role/content dictionaries."""
+        query = """
+        SELECT role, content
+        FROM chat_history
+        WHERE user_id = %s
+        ORDER BY created_at ASC
+        LIMIT %s;
+        """
+        rows = self.fetch_query(query, (user_id, limit))
+        return [{"role": role, "content": content} for role, content in rows]
+
     def close(self) -> None:
         """Close cursor and database connection."""
         try:
